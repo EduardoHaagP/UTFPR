@@ -1,6 +1,4 @@
-/*5) Sabendo que a função sqrt(valor), que está na biblioteca
-math.h retorna a raiz quadrada do valor, calcule a raiz
-quadrada de um número que o usuário digitar.*/
+/*5) Sabendo que a função sqrt(valor), que está na biblioteca math.h retorna a raiz quadrada do valor, calcule a raiz quadrada de um número que o usuário digitar.*/
 //bibliotecas
 #include <stdio.h>
 #include <stdlib.h>

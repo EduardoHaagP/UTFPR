@@ -1,6 +1,4 @@
-/*2) Faça um programa que receba um número e determine
-se ele é um número par ou ímpar.
- Obs.: Utilize o operador % que retorna o resto da divisão)*/
+/*2) Faça um programa que receba um número e determine se ele é um número par ou ímpar.  Obs.: Utilize o operador % que retorna o resto da divisão)*/
 
 #include <stdio.h>
 #include <stdlib.h>

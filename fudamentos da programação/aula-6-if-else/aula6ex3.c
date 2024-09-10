@@ -1,6 +1,4 @@
-/*3) Faça um programa que receba os coeficientes a, b e c
-de uma equação do segundo grau e retorne as raízes da
-equação (se existirem).*/
+/*3) Faça um programa que receba os coeficientes a, b e c de uma equação do segundo grau e retorne as raízes da equação (se existirem).*/
 
 #include <stdio.h>
 #include <stdlib.h>

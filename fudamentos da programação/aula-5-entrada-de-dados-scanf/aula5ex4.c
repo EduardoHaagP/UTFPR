@@ -1,5 +1,5 @@
-/*4) Calcule a média aritmética de 4 números reais que o usuário
-digitar. Imprima a média na tela apenas com 2 casas decimais.*/
+/*4) Calcule a média aritmética de 4 números reais que o usuário digitar. 
+Imprima a média na tela apenas com 2 casas decimais.*/
 //bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
