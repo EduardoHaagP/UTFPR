@@ -20,7 +20,7 @@ void converteHorario(int total_segundos, Horario* hor){
     hor->min = hor->min%60;
 
 
-} 
+}//converteHorario
 
 int main(){
     Horario hor;
@@ -30,4 +30,4 @@ int main(){
     converteHorario(receberSegundos, &hor);
     printf("%02i:%02i:%02i\n",hor.hora, hor.min, hor.seg);
 
-}
+}//main
