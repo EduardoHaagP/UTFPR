@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": ".",
-      "program": "build/Debug/outDebug",
+      "cwd": "c:/Users/dudih/OneDrive/Desktop/UTFPR/fundpro-1e2-2024/fundpro2-2024/aula_17",
+      "program": "c:/Users/dudih/OneDrive/Desktop/UTFPR/fundpro-1e2-2024/fundpro2-2024/aula_17/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
