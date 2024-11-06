@@ -1,12 +1,3 @@
-/*
-1) Crie uma função que retorne o fatorial de um número passado por 
-parâmetro. A ideia do fatorial está abaixo:
-
-fat -  1 se n = 0
-fat - nxgat(n-1) se n > 0
-*/
-
-
 #include <stdio.h>
 #include <stdlib.h>
 

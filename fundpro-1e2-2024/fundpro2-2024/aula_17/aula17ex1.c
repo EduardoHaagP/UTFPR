@@ -21,7 +21,7 @@ void converteHora(int total_segundos, int* hora, int* min, int* seg)
 
 
 
-}//converteHora
+}
 
 int main()
 {
@@ -32,4 +32,4 @@ int main()
     printf("%02i:%02i:%02i\n",hora, min, seg);
 
     return 0;
-}//main
+}
