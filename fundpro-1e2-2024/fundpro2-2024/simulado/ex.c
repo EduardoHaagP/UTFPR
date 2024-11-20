@@ -16,7 +16,7 @@ d) Exiba uma tabela com os líderes (maior número de pontos) de cada um dos ní
 
 e) Faça a busca de um jogador pelo nome digitado. A busca deve ser feita por uma função adicional que recebe o nome e retorna os dados de vitórias, derrotas, tier e pontos via referência.
 
-f) Utilizando uma função recursiva, calcule a soma de todas as partidas (vitórias e derrotas) de todos os jogadores.
+v
 
 Cada um dos itens de B a E deve ser implementada em uma função diferente.
 Não é permitido o uso de variáveis globais.
@@ -29,10 +29,12 @@ Texto de resposta Questão 1
 #include <stdio.h>
 #include <string.h>
 
+int const NUMPLAYERS = 3;
+
 // A
 typedef enum
 {
-    BRONZE = 1,
+    BRONZE = 0,
     PRATA,
     OURO,
     PLATINA,
@@ -86,29 +88,31 @@ void informacoesJodoresDerrotas(Jogador *jogadores)
 void informacoesJodoresTier(Jogador *jogadores)
 {
     int tier;
-    printf("Qual o tier desse jogador sendo:\n1 - Bronze\n2 - PRATA\n3 - OURO\n4 - PLATINA\n5 - DIAMANTE\n6 - DESAFIANTE\nDigite aqui: ");
+    printf("Qual o tier desse jogador sendo:\n0 - Bronze\n1 - Prata\n2 - Ouro\n3 - Platina\n4 - Diamante\n5 - Desafiante\nDigite aqui: ");
     scanf("%d", &tier);
     setbuf(stdin, NULL);
-    while (tier < 1 || tier > 6)
+    while (tier < 0 || tier > 5)
     {
         printf("Valor invalido! Digite novamente: ");
         scanf("%d", &tier);
         setbuf(stdin, NULL);
     }
     jogadores->tier = tier;
+    return;
 }
 
 void informacoesJodoresPontos(Jogador *jogadores)
 {
-    printf("Digite quantos pontos esse jogador tem: ");
+    printf("Digite quantos pontos esse jogador tem (0-99): ");
     scanf("%i", &jogadores->pontos);
     setbuf(stdin, NULL);
-    while (jogadores->pontos < 0)
+    while (jogadores->pontos <= 0 || jogadores->pontos > 100)
     {
         printf("Valor invalido! Digite novamente: ");
         scanf("%i", &jogadores->pontos);
         setbuf(stdin, NULL);
     }
+    return;
 }
 
 // C
@@ -123,14 +127,96 @@ void exibirWinRate(Jogador *jogadores, int i)
         printf("%22s|%s\n", "Nome", "Winrate");
     }
     float winRate = calculoWinRate((float)jogadores->vitorias, (float)jogadores->derrotas);
-    printf("%22s|%.2f\n", jogadores->nome, winRate);
+    printf("%-22s|%-.2f\n", jogadores->nome, winRate);
+    return;
+}
+
+// d) Exiba uma tabela com os líderes (maior número de pontos) de cada um dos níveis. Para isso, faça uma função extra que receba um tier e retorne uma estrutura do tipo Jogador com os dados do líder.
+
+int maiorPorTier(Jogador jogadores[], int tier)
+{
+    int maiorIndice = -1;
+    int maiorPontos = -1;
+
+    for (int i = 0; i < NUMPLAYERS; i++)
+    {
+        if ((int)jogadores[i].tier == tier && jogadores[i].pontos > maiorPontos)
+        {
+            maiorIndice = i;
+            maiorPontos = jogadores[i].pontos;
+        }
+    }
+    return maiorIndice;
+}
+
+void tabelaLideres(Jogador jogadores[],char tiers[6][12])
+{
+    printf("\n%-22s| %10s | %s\n", "Jogador", "Tier", "Pontos");
+    for (int i = BRONZE; i <= DESAFIANTE; i++)
+    {
+        int liderIndex = maiorPorTier(jogadores, i);
+        if (liderIndex != -1)
+        {
+            printf("%-22s| %10s | %d\n", jogadores[liderIndex].nome, tiers[liderIndex], jogadores[liderIndex].pontos);
+        }
+    }
+    return;
+}
+
+// e) Faça a busca de um jogador pelo nome digitado. A busca deve ser feita por uma função adicional que recebe o nome e retorna os dados de vitórias, derrotas, tier e pontos via referência.
+void pesquisarPlayer(Jogador jogadores[],char tiers[6][12])
+{
+    char nomeBusca[21];
+    int posicaoIgual = -1;
+    printf("Digite o Nome do jogador que voce procura: ");
+    fgets(nomeBusca, 20, stdin);
+    nomeBusca[strcspn(nomeBusca, "\n")] = '\0';
+    for (int i = 0; i < NUMPLAYERS; i++)
+    {
+        if (strcmp(nomeBusca, jogadores[i].nome) == 0)
+        {
+            posicaoIgual = i;
+        }
+    }
+    if (posicaoIgual == -1)
+    {
+        printf("Nenhum player com esse nome foi encontrei");
+    }
+    else
+    {
+        printf("%22s|%15s|%15s|%6s|%8s\n", "nome", "vitorias", "derrotas", "tier", "pontos");
+        printf("%22s|%15i|%15i|%6s|%8i\n", jogadores[posicaoIgual].nome, jogadores[posicaoIgual].vitorias, jogadores[posicaoIgual].derrotas, tiers[posicaoIgual], jogadores[posicaoIgual].pontos);
+    }
+}
+// f) Utilizando uma função recursiva, calcule a soma de todas as partidas (vitórias e derrotas) de todos os jogadores.
+int somaPartidas(Jogador jogadores[], int n)
+{
+    if (n == 0)
+    { // Caso base
+        return (jogadores[0].vitorias + jogadores[0].derrotas);
+    }
+    else
+    { // Caso recursivo
+        return jogadores[n - 1].vitorias + jogadores[n - 1].derrotas + somaPartidas(jogadores, n - 1);
+    }
+}
+void imprimirTotalPartidas(int TotalPartidas){
+    printf("O total de partidas disputada pelos players e: %i",TotalPartidas);
+    return;
 }
 
 int main()
 {
     printf("Hello World!\n");
-    Jogador jogadores[2];
-    for (int i = 0; i < 2; i++)
+    Jogador jogadores[NUMPLAYERS];
+    char tiers[6][12] = {
+        "Bronze",
+        "Prata",
+        "Ouro",
+        "Platina",
+        "Diamante",
+        "Desafiante"};
+    for (int i = 0; i < NUMPLAYERS; i++)
     {
         informacoesJodoresNome(&jogadores[i], i);
         informacoesJodoresVitorias(&jogadores[i]);
@@ -138,8 +224,12 @@ int main()
         informacoesJodoresTier(&jogadores[i]);
         informacoesJodoresPontos(&jogadores[i]);
     }
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < NUMPLAYERS; i++)
     {
         exibirWinRate(&jogadores[i], i);
     }
+    tabelaLideres(jogadores, tiers);
+    pesquisarPlayer(jogadores, tiers);
+    int TotalPatidas = somaPartidas(jogadores, NUMPLAYERS);
+    imprimirTotalPartidas(TotalPatidas);
 }
