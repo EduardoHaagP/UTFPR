@@ -1,0 +1,5 @@
+dirceu,99
+gabriel,34
+lucas,15
+bonfa,18
+eduardo,112
