@@ -57,16 +57,15 @@ EUA        |Orlando     |  25|    5|
 #include <stdlib.h>
 #include <string.h>
 
-
 enum paises
 {
-    FIM = 0,
-    BRASIL,
+    BRASIL = 0,
     EUA,
     FRANCA,
     INGLATERRA,
     CHINA,
-    JAPAO
+    JAPAO,
+    FIM
 };
 typedef struct
 {
@@ -76,16 +75,99 @@ typedef struct
     int quantidadeServersDown;
 } Notificacoes;
 
+void formarRelatorio(Notificacoes **relatorio, int quantidade, FILE **arq2)
+{
+    int problemasTotaisPorPais[6] = {0, 0, 0, 0, 0, 0}, ativosTotaisPorPais[6] = {0, 0, 0, 0, 0, 0};
 
+    for (int i = 0; i < quantidade; i++)
+    {
+        if (strcmp((*relatorio)[i].pais, "Brasil") == 0)
+        {
+            problemasTotaisPorPais[BRASIL] += (*relatorio)[i].quantidadeServersDown;
+            ativosTotaisPorPais[BRASIL] += (*relatorio)[i].quantidadeServersUP;
+        }
+        else if (strcmp((*relatorio)[i].pais, "EUA") == 0)
+        {
+            problemasTotaisPorPais[EUA] += (*relatorio)[i].quantidadeServersDown;
+            ativosTotaisPorPais[EUA] += (*relatorio)[i].quantidadeServersUP;
+        }
+        else if (strcmp((*relatorio)[i].pais, "Franca") == 0)
+        {
+            problemasTotaisPorPais[FRANCA] += (*relatorio)[i].quantidadeServersDown;
+            ativosTotaisPorPais[FRANCA] += (*relatorio)[i].quantidadeServersUP;
+        }
+        else if (strcmp((*relatorio)[i].pais, "Inglaterra") == 0)
+        {
+            problemasTotaisPorPais[INGLATERRA] += (*relatorio)[i].quantidadeServersDown;
+            ativosTotaisPorPais[INGLATERRA] += (*relatorio)[i].quantidadeServersUP;
+        }
+        else if (strcmp((*relatorio)[i].pais, "China") == 0)
+        {
+            problemasTotaisPorPais[CHINA] += (*relatorio)[i].quantidadeServersDown;
+            ativosTotaisPorPais[CHINA] += (*relatorio)[i].quantidadeServersUP;
+        }
+        else if (strcmp((*relatorio)[i].pais, "Japao") == 0)
+        {
+            problemasTotaisPorPais[JAPAO] += (*relatorio)[i].quantidadeServersDown;
+            ativosTotaisPorPais[JAPAO] += (*relatorio)[i].quantidadeServersUP;
+        }
+    }
+    printf("%11s|%5s|%5s|%6s\n", "PAIS", "UP", "DOWN", "RATE");
+
+    for (int i = 0; i < 6; i++)
+    {
+        float totalServers = (float)(ativosTotaisPorPais[i] + problemasTotaisPorPais[i]);
+        float rate = 0.0;
+        if (totalServers > 0)
+        {
+            rate = (float)(problemasTotaisPorPais[i] * 100) / totalServers;
+        }
+
+        if (i == BRASIL)
+        {
+            printf("%11s|%5i|%5i|%%%6.1f\n", "Brasil", ativosTotaisPorPais[BRASIL], problemasTotaisPorPais[BRASIL], rate);
+            fprintf(*arq2, "%11s|%5i|%5i|%%%6.1f\n", "Brasil", ativosTotaisPorPais[BRASIL], problemasTotaisPorPais[BRASIL], rate);
+        }
+        else if (i == EUA)
+        {
+            printf("%11s|%5i|%5i|%%%6.1f\n", "EUA", ativosTotaisPorPais[EUA], problemasTotaisPorPais[EUA], rate);
+            fprintf(*arq2, "%11s|%5i|%5i|%%%6.1f\n", "EUA", ativosTotaisPorPais[EUA], problemasTotaisPorPais[EUA], rate);
+        }
+        else if (i == FRANCA)
+        {
+            printf("%11s|%5i|%5i|%%%6.1f\n", "Franca", ativosTotaisPorPais[FRANCA], problemasTotaisPorPais[FRANCA], rate);
+            fprintf(*arq2, "%11s|%5i|%5i|%%%6.1f\n", "Franca", ativosTotaisPorPais[FRANCA], problemasTotaisPorPais[FRANCA], rate);
+        }
+        else if (i == INGLATERRA)
+        {
+            printf("%11s|%5i|%5i|%%%6.1f\n", "Inglaterra", ativosTotaisPorPais[INGLATERRA], problemasTotaisPorPais[INGLATERRA], rate);
+            fprintf(*arq2, "%11s|%5i|%5i|%%%6.1f\n", "Inglaterra", ativosTotaisPorPais[INGLATERRA], problemasTotaisPorPais[INGLATERRA], rate);
+        }
+        else if (i == CHINA)
+        {
+            printf("%11s|%5i|%5i|%%%6.1f\n", "China", ativosTotaisPorPais[CHINA], problemasTotaisPorPais[CHINA], rate);
+            fprintf(*arq2, "%11s|%5i|%5i|%%%6.1f\n", "China", ativosTotaisPorPais[CHINA], problemasTotaisPorPais[CHINA], rate);
+        }
+        else if (i == JAPAO)
+        {
+            printf("%11s|%5i|%5i|%%%6.1f\n", "Japao", ativosTotaisPorPais[JAPAO], problemasTotaisPorPais[JAPAO], rate);
+            fprintf(*arq2, "%11s|%5i|%5i|%%%6.1f\n", "Japao", ativosTotaisPorPais[JAPAO], problemasTotaisPorPais[JAPAO], rate);
+        }
+    }
+    return;
+}
+// b
 void pais(char nomePais[21])
 {
     int npais;
-    printf("Qual o Pais que o problema se encontra:\n1 - Brasil\n2 - EUA\n3- França\n4 - Inglaterra\n5 - China\n6 - Japão\n0 - Fim\nDigite aqui: ");
+    printf("Qual o Pais que o problema se encontra:\n0 - Brasil\n1 - EUA\n2- Franca\n3 - Inglaterra\n4 - China\n5 - Japao\n6 - Fim\nDigite aqui: ");
     scanf("%i", &npais);
-    while (npais >= 6 || npais < 0)
+    setbuf(stdin, NULL);
+    while (npais > 6 || npais < 0)
     {
         printf("Valor invalido\nDigite novamente: ");
         scanf("%i", &npais);
+        setbuf(stdin, NULL);
     }
 
     switch (npais)
@@ -112,7 +194,7 @@ void pais(char nomePais[21])
         strcpy(nomePais, "China");
         break;
     case JAPAO:
-        strcpy(nomePais, "Japão");
+        strcpy(nomePais, "Japao");
         break;
     }
     return;
@@ -130,16 +212,18 @@ void cidade(char ncidade[21])
 int qntServerUP()
 {
     int qntServerUP;
-    printf("Quantos servers estão ativos: ");
+    printf("Quantos servers estao ativos: ");
     scanf("%i", &qntServerUP);
+    setbuf(stdin, NULL);
     return qntServerUP;
 }
 
 int qntServerDown()
 {
     int qntServerDown;
-    printf("Quantos servers estão ativos: ");
+    printf("Quantos servers estao inativos: ");
     scanf("%i", &qntServerDown);
+    setbuf(stdin, NULL);
     return qntServerDown;
 }
 
@@ -147,17 +231,23 @@ int receberNotificacoes(Notificacoes **p)
 {
     int contador = 0, n = 1;
 
-    while (contador < (5*n) )
+    while (contador < (5 * n))
     {
-        if (contador == 4)
+        if (contador == ((5 * n) - 1))
         {
-            p = realloc(p, (contador+6) * sizeof(Notificacoes));
+            *p = realloc(*p, (contador + 6) * sizeof(Notificacoes));
+            if (*p == NULL)
+            {
+                printf("Erro: Memória insuficiente!\n");
+                exit(1);
+            }
+            n++;
         }
         char npais[21];
         pais(npais);
         if (strcmp("Fim", npais) == 0)
         {
-            return 0;
+            return contador;
         }
         strcpy((*p)[contador].pais, npais);
 
@@ -168,10 +258,6 @@ int receberNotificacoes(Notificacoes **p)
         (*p)[contador].quantidadeServersUP = qntServerUP();
         (*p)[contador].quantidadeServersDown = qntServerDown();
         contador++;
-        n++;
-
-        
-        
     }
 
     return contador;
@@ -179,17 +265,49 @@ int receberNotificacoes(Notificacoes **p)
 
 int main()
 {
+    // a
     Notificacoes *p = malloc(5 * sizeof(Notificacoes));
     if (p == NULL)
     {
         printf("Erro: Memória Insuficiente!\n");
         exit(1);
     }
+    // b
     int r = 0;
     r = receberNotificacoes(&p);
-
     p = realloc(p, r * sizeof(Notificacoes));
 
+    // c
+    FILE *arq = fopen("notifications.dat", "wb");
+    if (arq == NULL)
+    {
+        printf("Erro na abertura do arquivo");
+        exit(1); // finaliza o programa
+    }
+    fwrite(p, sizeof(Notificacoes), r, arq);
+    fclose(arq);
     free(p);
+
+    // d
+    FILE *arq2 = fopen("notifications.dat", "rb");
+    if (arq2 == NULL)
+    {
+        printf("Erro na abertura do arquivo");
+        exit(1); // finaliza o programa
+    }
+    Notificacoes *relatorio = malloc(r * sizeof(Notificacoes));
+    if (relatorio == NULL)
+    {
+        printf("Erro: Memória Insuficiente!\n");
+        exit(1);
+    }
+    fread(relatorio, sizeof(Notificacoes), r, arq2);
+
+    // e
+    FILE *arq3 = fopen("report.txt", "w");
+    formarRelatorio(&relatorio, r, &arq3);
+
+    free(relatorio);
+    fclose(arq2);
     return 0;
 }

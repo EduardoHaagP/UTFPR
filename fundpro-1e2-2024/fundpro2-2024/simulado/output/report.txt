@@ -1,0 +1,6 @@
+     Brasil|    0|    0|%   0.0
+        EUA|    0|    0|%   0.0
+     Franca|    2|    2|%  50.0
+ Inglaterra|    0|    0|%   0.0
+      China|    0|    0|%   0.0
+      Japao|    0|    0|%   0.0
